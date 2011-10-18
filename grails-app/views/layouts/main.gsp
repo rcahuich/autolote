@@ -17,8 +17,21 @@
 		<g:layoutHead/>
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner"><a href="${createLink(uri: '/')}"><img src="${resource(dir: 'images', file: 'auto-lote.png')}" alt="Auto-Lote" style="width: 150px; height: 75px;"/></a></div>
-		<g:layoutBody/>
+          
+          
+          <div id="grailsLogo" role="banner">
+            <div id="logo">
+                <a href="${createLink(uri: '/')}"><img src="${resource(dir: 'images', file: 'autoloteO.png')}" alt="Auto-Lote" style="width: 250px; height: 100px;"/></a>
+            </div>
+            <div class="encabezado">
+                <sec:ifLoggedIn>
+                  <a>Bienvenido <sec:username /></a>|
+                  <a href="${createLink(controller:'logout')}"><g:message code="logout.header.message" /></a>
+                </sec:ifLoggedIn>
+            </div>
+        </div>
+        
+        <g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		<g:javascript library="application"/>

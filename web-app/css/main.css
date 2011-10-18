@@ -1,17 +1,18 @@
 /* FONT STACK */
 body,
 input, select, textarea {
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-family: Geneva,Arial,Helvetica,sans-serif;
 }
 
 /* BASE LAYOUT */
 
 html {
-	background-color: #ddd;
-	background-image: -moz-linear-gradient(center top, #aaa, #ddd);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(1, #ddd));
-	background-image: linear-gradient(top, #aaa, #ddd);
+	/*background-color: #ddd;*/
+	/*background-image: -moz-linear-gradient(center top, #aaa, #ddd);*/
+	/*background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(1, #ddd));*/
+	/*background-image: linear-gradient(top, #aaa, #ddd);*/
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#aaa', EndColorStr = '#ddd');
+        background-image: url(../images/bg-top-1.jpg);
 	background-repeat: no-repeat;
 	height: 100%;
 	/* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
@@ -33,7 +34,6 @@ html * {
 }
 
 body {
-	background: #ffffff;
 	color: #333333;
 	margin: 0 auto;
 	max-width: 960px;
@@ -44,7 +44,19 @@ body {
 }
 
 #grailsLogo {
-	background-color: #ffffff;
+    background: #ffffff;
+}
+
+#logo {
+    float: left;
+}
+
+.encabezado {
+    height: 75px;
+    margin-right: 30px;
+    margin-top: 0px;
+    padding-top: 55px;
+    text-align: right;
 }
 
 /* replace with .no-boxshadow body if you have modernizr available */
@@ -69,9 +81,9 @@ a:hover, a:active {
 }
 
 h1 {
-	color: #48802c;
-	font-weight: normal;
-	font-size: 1.25em;
+	color: #85AB26;
+	font-weight: bolder;
+	font-size: 1.6em;
 	margin: 0.8em 0 0.3em 0;
 }
 
@@ -104,7 +116,7 @@ img {
 }
 
 .footer {
-	background: #7A85F5;
+	
 	color: #000;
 	clear: both;
 	font-size: 0.8em;
@@ -131,11 +143,13 @@ img {
 /* NAVIGATION MENU */
 
 .nav {
-	background-color: #7A85F5;
+	background-color: #454545;
+        font-family: 'Oswald',sans-serif;
+        font-size: 15px;
 	padding: 0.5em 0.75em;
-	   -moz-box-shadow: 0 0 3px 1px #AB3232;
-	-webkit-box-shadow: 0 0 3px 1px #AB3232;
-	        box-shadow: 0 0 3px 1px #AB3232;
+	   -moz-box-shadow: 0 0 2px 1px #000000;
+	-webkit-box-shadow: 0 0 2px 1px #000000;
+	        box-shadow: 0 0 2px 1px #000000;
 	zoom: 1;
 }
 
@@ -154,7 +168,7 @@ img {
 }
 
 .nav a {
-	color: #666666;
+	color: #D1D1D1;
 	display: block;
 	padding: 0.25em 0.7em;
 	text-decoration: none;
@@ -164,11 +178,11 @@ img {
 }
 
 .nav a:active, .nav a:visited {
-	color: #666666;
+	color: #ffffff;
 }
 
 .nav a:focus, .nav a:hover {
-	background-color: #AB3232;
+	background-color: #272727;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -426,6 +440,7 @@ th {
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eaeaea')";
 	color: #666666;
 	font-weight: bold;
+        font-size: 14px;
 	line-height: 1.7em;
 	padding: 0.2em 0.6em;
 }
@@ -444,7 +459,8 @@ th a:link, th a:visited {
 }
 
 th a:hover, th a:focus {
-	color: #333333;
+    /*Color de sombra en titulo de tabla*/
+	color: #ffffff;
 }
 
 th.sortable a {
@@ -470,7 +486,8 @@ th.desc a {
 }
 
 th:hover, tr:hover {
-	background: #E1F2B6;
+    /* cuando se pone la sombra cuando se pasa el mouse encima */
+	background: #85AB26;
 }
 
 /* PAGINATION */
