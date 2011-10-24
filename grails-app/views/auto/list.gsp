@@ -13,47 +13,78 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
-		<div id="list-auto" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
+		
+                <div id="list-auto" class="content scaffold-list" role="main">
+			
+                  <h1><g:message code="auto.encuentraAuto"/></h1>
+			
+                        <g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
+                  
+                  
+                  <div class="search">
+                          <g:form method="post">
+                            <div>
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td style="vertical-align:middle;width:50px;">
+                                      <label for="filtro"><g:message code="entrada.buscar" default="Buscar"/>:</label>
+                                    </td>
+                                    <td style="width:50px; vertical-align: middle;">
+                                      <g:select id="filtro" name="filtro" from="${['Acura', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Bugatti', 'Buick', 'Cadillac', 'Chevrolet', 'Chrysler', 'Dodge', 'Ferrari', 'FIAT', 'Fisker', 'Ford', 'GMC', 'Honda', 'Hyundai', 'Infiniti', 'Jaguar', 'Jeep', 'KIA', 'Lamborghini', 'Land Rover', 'Lexus', 'Lincoln', 'Lotus', 'Maserati', 'Maybach', 'Mazda', 'McLaren', 'Mercedez Benz', 'Mercury', 'MINI', 'Mitsubishi', 'Nissan', 'Porsche', 'Rolls-Royce', 'Saab', 'Scion', 'Smart', 'Spyker', 'Subaru', 'Suzuki', 'Tesla', 'Toyota', 'Volkswagen', 'Volvo']}" value="${params.filtro}" />
+                                    </td>
+                                    <td>
+                                      <g:actionSubmit action="encuentraAuto" value="Buscar" class="save" style="vertical-align: middle;" />
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </g:form>
+                  </div>
+			
+                        <table>
 				<thead>
 					<tr>
 					
 						<g:sortableColumn property="marca" title="${message(code: 'auto.marca.label', default: 'Marca')}" />
 					
-						<g:sortableColumn property="status" title="${message(code: 'auto.status.label', default: 'Status')}" />
 					
 						<g:sortableColumn property="color" title="${message(code: 'auto.color.label', default: 'Color')}" />
 					
-						<g:sortableColumn property="compra" title="${message(code: 'auto.compra.label', default: 'Compra')}" />
+						<g:sortableColumn property="compra" title="${message(code: 'auto.compra.label', default: 'Precio')}" />
 					
 						<g:sortableColumn property="fechaDeModelo" title="${message(code: 'auto.fechaDeModelo.label', default: 'Fecha De Modelo')}" />
 					
 						<g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Modelo')}" />
+                                                
+                                                <g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Imagen')}" />
 					
+                                                <g:sortableColumn property="modelo" title="${message(code: 'auto.comprar.label', default: '   ')}" />
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${autoInstanceList}" status="i" var="autoInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${autoInstance.id}">${fieldValue(bean: autoInstance, field: "marca")}</g:link></td>
+						<td>${fieldValue(bean: autoInstance, field: "marca")}</td>
 					
-						<td>${fieldValue(bean: autoInstance, field: "status")}</td>
 					
 						<td>${fieldValue(bean: autoInstance, field: "color")}</td>
 					
-						<td>${fieldValue(bean: autoInstance, field: "compra")}</td>
+						<td>${fieldValue(bean: autoInstance, field: "venta")}</td>
 					
 						<td>${fieldValue(bean: autoInstance, field: "fechaDeModelo")}</td>
 					
 						<td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
+                                                
+                                                <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:jugador?.id)}" /></td>
+                                                
+                                                <td><g:link action="compraAuto" id="${autoInstance.id}">Comprar</g:link></td>
 					
 					</tr>
 				</g:each>

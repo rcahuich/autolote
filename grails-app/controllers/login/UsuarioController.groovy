@@ -1,33 +1,73 @@
 package login
+import login.*
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.converters.JSON
+import grails.plugins.springsecurity.Secured
+import org.springframework.dao.DataIntegrityViolationException
+
 
 class UsuarioController {
-
+    
+    def usuarioService
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    
     def index() {
         redirect(action: "list", params: params)
     }
 
+    @Secured(['ROLE_ADMIN'])
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [usuarioInstanceList: Usuario.list(params), usuarioInstanceTotal: Usuario.count()]
     }
 
+    
     def create() {
         [usuarioInstance: new Usuario(params)]
     }
 
     def save() {
-        def usuarioInstance = new Usuario(params)
-        if (!usuarioInstance.save(flush: true)) {
-            render(view: "create", model: [usuarioInstance: usuarioInstance])
-            return
+        
+        def usuario
+        try {
+            Usuario.withTransaction {
+                usuario = new Usuario(params)
+                println("------------ $usuario.password")
+                //usuario.password = springSecurityService.encodePassword(params.password)
+                
+                def roles = [] as Set
+                
+                roles << Rol.findByAuthority('ROLE_COMPRADOR')
+                
+                usuario = usuarioService.crea(usuario, roles)
+                
+                println("------------ $usuario")
+                
+                flash.message = message(code:"usuario.crea",args:[usuario])
+                redirect(uri:'/')
+            }
+        } catch(Exception e) {
+            log.error("No se pudo crear el usuario",e)
+            if (usuario) {
+                usuario.discard()
+            }
+            flash.message = message(code:"usuario.noCrea")
+            render(view:"create", model: [usuario: usuario])
         }
-
-		flash.message = message(code: 'default.created.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuarioInstance.id])
-        redirect(action: "show", id: usuarioInstance.id)
+    
+        
+    
+//        def usuarioInstance = new Usuario(params)
+//        if (!usuarioInstance.save(flush: true)) {
+//            render(view: "create", model: [usuarioInstance: usuarioInstance])
+//            return
+//        }
+//
+//		flash.message = message(code: 'default.created.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuarioInstance.id])
+//        redirect(action: "show", id: usuarioInstance.id)
     }
 
     def show() {
@@ -41,6 +81,7 @@ class UsuarioController {
         [usuarioInstance: usuarioInstance]
     }
 
+    @Secured(['ROLE_ADMIN'])
     def edit() {
         def usuarioInstance = Usuario.get(params.id)
         if (!usuarioInstance) {
@@ -52,6 +93,7 @@ class UsuarioController {
         [usuarioInstance: usuarioInstance]
     }
 
+    @Secured(['ROLE_ADMIN'])
     def update() {
         def usuarioInstance = Usuario.get(params.id)
         if (!usuarioInstance) {
@@ -82,6 +124,7 @@ class UsuarioController {
         redirect(action: "show", id: usuarioInstance.id)
     }
 
+    @Secured(['ROLE_ADMIN'])
     def delete() {
         def usuarioInstance = Usuario.get(params.id)
         if (!usuarioInstance) {
@@ -100,4 +143,9 @@ class UsuarioController {
             redirect(action: "show", id: params.id)
         }
     }
+    
+    def verficaInicio = {
+         println("Necesita Loguearse")
+    }
+    
 }

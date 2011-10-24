@@ -18,6 +18,6 @@ class Costo {
     }
     
     String toString() {
-        return "$costo"
+        return "$costo de $descripcion"
     }
 }

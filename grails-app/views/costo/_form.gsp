@@ -18,14 +18,6 @@
 	<g:field type="number" name="costo" required="" value="${fieldValue(bean: costoInstance, field: 'costo')}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: costoInstance, field: 'auto', 'error')} required">
-	<label for="auto">
-		<g:message code="costo.auto.label" default="Auto" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="auto" name="auto.id" from="${general.Auto.list()}" optionKey="id" required="" value="${costoInstance?.auto?.id}" class="many-to-one"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: costoInstance, field: 'fecha', 'error')} required">
 	<label for="fecha">
 		<g:message code="costo.fecha.label" default="Fecha" />

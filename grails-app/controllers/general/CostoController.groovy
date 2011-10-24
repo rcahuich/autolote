@@ -27,7 +27,7 @@ class CostoController {
         }
 
 		flash.message = message(code: 'default.created.message', args: [message(code: 'costo.label', default: 'Costo'), costoInstance.id])
-        redirect(action: "show", id: costoInstance.id)
+        redirect(controller:"auto", action: "show", id: costoInstance.auto.id)
     }
 
     def show() {

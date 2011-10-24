@@ -28,11 +28,17 @@
                   <a>Bienvenido <sec:username /></a>|
                   <a href="${createLink(controller:'logout')}"><g:message code="logout.header.message" /></a>
                 </sec:ifLoggedIn>
+              <sec:ifNotLoggedIn>
+                  <g:link controller='login' action='auth'>iniciar sesión</g:link>|
+                  <g:link controller='usuario' action='create'>registrarse</g:link>
+              </sec:ifNotLoggedIn>
             </div>
         </div>
         
         <g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
+		<div class="footer" role="contentinfo">
+                  <p style="text-align:right;">&copy; 2011 Auto-Lote</p>
+                </div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		<g:javascript library="application"/>
 	</body>

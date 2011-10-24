@@ -23,10 +23,10 @@ class Usuario {
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
-                nombre nullable: false
-                apellido nullable: false
+                nombre blank: false
+                apellido blank: false
                 telefono matches:"[0-9]{10}"
-                email mail:true
+                email blank: false, mail:true
 	}
 
 	static mapping = {

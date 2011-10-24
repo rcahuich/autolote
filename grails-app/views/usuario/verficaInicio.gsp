@@ -11,15 +11,6 @@
                     <ul>
                       <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                       <li><g:link controller="auto"><g:message code="inventario.label" default="Autos en Venta" /></g:link></li>
-                      
-                      <sec:ifAllGranted roles="ROLE_ADMIN">
-                        <li><g:link class="list" controller="auto" action="buscaAuto"><g:message code="inventario.label" default="Mis Autos" /></g:link></li> 
-                        <li><g:link class="list" controller="usuario"><g:message code="inventario.label" default="Admin" /></g:link></li> 
-                      </sec:ifAllGranted>
-                    
-                      <sec:ifAllGranted roles="ROLE_COMPRADOR">
-                        <li><g:link class="list" controller="auto" action="buscaAuto"><g:message code="inventario.label" default="Mis Autos" /></g:link></li> 
-                      </sec:ifAllGranted>
                     
                     </ul>
                 </div>
@@ -27,13 +18,15 @@
                 <div class="message" role="status">${flash.message}</div>
                 </g:if>
                 <div class="content" style="padding:10px 50px;">
-                    <h1>Auto-Lote</h1>
+                  <center><h1>Lo sentimos</h1></center>
 
-                    Bienvenido al Sitio de Compra y Venta de Autos
-
+                    <p style="text-align: center">
+                    Necesitas iniciar sesión o estar registrado para poder comprar
+                    </p>
 
 
                 </div>
 		</div>
 	</body>
 </html>
+
