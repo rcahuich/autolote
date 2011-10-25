@@ -20,7 +20,7 @@
                       <sec:ifAllGranted roles="ROLE_COMPRADOR">
                         <li><g:link class="list" controller="auto" action="buscaAuto"><g:message code="inventario.label" default="Mis Autos" /></g:link></li> 
                       </sec:ifAllGranted>
-                    
+                                         
                     </ul>
                 </div>
                 <g:if test="${flash.message}">

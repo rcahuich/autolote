@@ -1,4 +1,5 @@
 package general
+import login.*
 
 import static org.junit.Assert.*
 import org.junit.*
@@ -10,6 +11,16 @@ class AutoTests {
         // Setup logic here
         println "Entrando a creaAuto"
 
+//        def usuario = new Usuario(
+//                username:'admin',
+//                password:'admin',
+//                nombre: 'Comprador',
+//                apellido: 'de Autos',
+//                fechaDeNacimiento: '07/12/2011',
+//                telefono: '1234567890',
+//                email: 'admin@auto.com'
+//            ).save()
+            
         for(i in 1..10){
             def auto = new Auto(
                     marca: "Nissan",
@@ -18,7 +29,8 @@ class AutoTests {
                     color: "Blanco",
                     status: "LOTE",
                     compra: new BigDecimal(100),
-                    venta: new BigDecimal(100)
+                    venta: new BigDecimal(100),
+                    usuario: usuario
                 ).save(flus:true)
            
             assertNotNull auto

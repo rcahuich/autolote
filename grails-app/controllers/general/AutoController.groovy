@@ -1,4 +1,5 @@
 package general
+import login.*
 
 import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.JSON
@@ -18,7 +19,8 @@ class AutoController {
     
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [autoInstanceList: Auto.list(params), autoInstanceTotal: Auto.count()]
+        def resultado = autoService.buscaAutosEnVenta(params)
+        [autoInstanceList: resultado.lista, autoInstanceTotal: resultado.cantidad]
     }
     
     @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
@@ -28,8 +30,12 @@ class AutoController {
 
     @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
     def save() {
-        def autoInstance = new Auto(params)
-        
+
+        def autoInstance
+        try{
+        Auto.withTransaction{
+         autoInstance = new Auto(params)
+         
 //        println("imagen ----- $params.imagen")
 //        def archivo = request.getFile('imagen')
 //                if (!archivo.empty) {
@@ -49,27 +55,22 @@ class AutoController {
 //                    jugador.save()
 //           }
 
-        
-        
-        
-        
-        
+                
+           autoInstance = autoService.crea(autoInstance)
            
-        if (!autoInstance.save(flush: true)) {
-            render(view: "create", model: [autoInstance: autoInstance])
-            return
+           flash.message = message(code: 'default.created.message', args: [message(code: 'auto.label', default: 'Auto'), autoInstance.id])
+           redirect(action: "show", id: autoInstance.id)
+           
+        
         }
-            
-            println("----------- autoId $autoInstance.id")
-            println("----------- usuarioId $springSecurityService.principal.id")
-            
-            def ua = new UsuarioAuto(
-                    auto: autoInstance.id,
-                    usuario: springSecurityService.principal.id
-            ).save(flush: true)
-            
-	flash.message = message(code: 'default.created.message', args: [message(code: 'auto.label', default: 'Auto'), autoInstance.id])
-        redirect(action: "show", id: autoInstance.id)
+        }catch(Exception e){
+             log.error("No se pudo crear el auto ",e)
+                if (autoInstance) {
+                autoInstance.discard()
+            }
+            flash.message = message(code:"auto.noCrea")
+            render(view:"create", model: [autoInstance: autoInstance])
+           }
     }
 
     @Secured(['ROLE_ADMIN','ROLE_COMPRADOR','ROLE_USER'])
@@ -149,29 +150,23 @@ class AutoController {
     
     @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
     def buscaAuto = {
-        println("filtrooo ##### %${params.filtro}%")
         def autoInstance = Auto.get(params.id)
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def resultado = autoService.listadeAutos(params)
-        println("resultado ##### %${resultado}%")
         [autoInstanceList : resultado.listas, autoInstanceTotal: Auto.count()]
     }
     
    
     def encuentraAuto = {
-        println("filtrooo ##### %${params.filtro}%")
         def autoInstance = Auto.get(params.id)
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def resultado = autoService.encuntraAut(params)
-        println("resultado ##### %${resultado}%")
-        [autoInstanceList : resultado.listas, autoInstanceTotal: Auto.count()]
+        [autoInstanceList : resultado.listas, autoInstanceTotal: resultado.cantidad]
     }
     
    
     def compraAuto = {
         if (springSecurityService.isLoggedIn()) {
-            println("SI esta logueado")
-            
             def autoOtro = Auto.get(params.id)
             autoOtro.status = "VENDIDO"
             
@@ -185,10 +180,11 @@ class AutoController {
                 venta: new BigDecimal("0.00")
             )
             
-            autoNuevo.save(flush:true)
-            autoOtro.save(flush:true)
+            def nue = autoService.crea(autoNuevo)
             
-            flash.message = message(code: 'ninguno.ninguno', args: [autoNuevo])
+            //autoOtro.update()
+            
+            flash.message = message(code: 'ninguno.ninguno', args: [nue])
             redirect(action: "show", id: autoNuevo.id)
             
             

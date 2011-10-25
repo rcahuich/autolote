@@ -1,4 +1,5 @@
 package general
+import login.*
 
 class Auto {
     
@@ -11,6 +12,9 @@ class Auto {
     BigDecimal venta = new BigDecimal("0.00")
     Set costos
     Set imagenes
+    Usuario usuario
+    
+    static belongsTo = [usuario: Usuario]
     
     static hasMany = [costos : Costo, imagenes: Imagen]
 

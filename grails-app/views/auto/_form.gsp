@@ -1,8 +1,10 @@
 <%@ page import="general.Auto" %>
 
+
+
 <div class="fieldcontain ${hasErrors(bean: autoInstance, field: 'marca', 'error')} ">
 	<label for="marca">
-		<g:message code="auto.marca.label" default="Seleccione la Marca" />
+		<g:message code="auto.marca.label" default="Marca" />
 		
 	</label>
 	<g:select name="marca" from="${autoInstance.constraints.marca.inList}" value="${autoInstance?.marca}" valueMessagePrefix="auto.marca" noSelection="['': '']"/>
@@ -10,7 +12,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: autoInstance, field: 'modelo', 'error')} ">
 	<label for="modelo">
-		<g:message code="auto.modelo.label" default="Escriba su modelo" />
+		<g:message code="auto.modelo.label" default="Modelo" />
 		
 	</label>
 	<g:textField name="modelo" value="${autoInstance?.modelo}"/>
@@ -18,7 +20,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: autoInstance, field: 'fechaDeModelo', 'error')} ">
 	<label for="fechaDeModelo">
-		<g:message code="auto.fechaDeModelo.label" default="Año del Modelo" />
+		<g:message code="auto.fechaDeModelo.label" default="Fecha De Modelo" />
 		
 	</label>
 	<g:textField name="fechaDeModelo" value="${autoInstance?.fechaDeModelo}"/>
@@ -42,7 +44,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: autoInstance, field: 'compra', 'error')} required">
 	<label for="compra">
-		<g:message code="auto.compra.label" default="A cuanto se compro" />
+		<g:message code="auto.compra.label" default="Compra" />
 		<span class="required-indicator">*</span>
 	</label>
 	<g:field type="number" name="compra" required="" value="${fieldValue(bean: autoInstance, field: 'compra')}"/>
@@ -50,7 +52,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: autoInstance, field: 'venta', 'error')} required">
 	<label for="venta">
-		<g:message code="auto.venta.label" default="A cuanto se vendera" />
+		<g:message code="auto.venta.label" default="Venta" />
 		<span class="required-indicator">*</span>
 	</label>
 	<g:field type="number" name="venta" required="" value="${fieldValue(bean: autoInstance, field: 'venta')}"/>

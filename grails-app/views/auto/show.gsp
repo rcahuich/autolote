@@ -12,7 +12,7 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" controller="auto" action="buscaAuto"><g:message code="inventario.label" default="Mis Autos" /></g:link></li>
+				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
@@ -60,12 +60,12 @@
 				</g:if>
 			
 				<g:if test="${autoInstance?.fechaDeModelo}">
-                                      <li class="fieldcontain">
-                                              <span id="fechaDeModelo-label" class="property-label"><g:message code="auto.fechaDeModelo.label" default="Fecha De Modelo" /></span>
-
-                                                      <span class="property-value" aria-labelledby="fechaDeModelo-label"><g:fieldValue bean="${autoInstance}" field="fechaDeModelo"/></span>
-
-                                      </li>
+				<li class="fieldcontain">
+					<span id="fechaDeModelo-label" class="property-label"><g:message code="auto.fechaDeModelo.label" default="Fecha De Modelo" /></span>
+					
+						<span class="property-value" aria-labelledby="fechaDeModelo-label"><g:fieldValue bean="${autoInstance}" field="fechaDeModelo"/></span>
+					
+				</li>
 				</g:if>
 			
 				<g:if test="${autoInstance?.imagenes}">
@@ -97,17 +97,7 @@
 				</li>
 				</g:if>
                           
-                          
-                          <g:if test="${autoInstance?.venta}">
-				<li class="fieldcontain">
-					<span id="venta-label" class="property-label"><g:message code="auto.venta.label" default="Foto" /></span>
-					
-						<span class="property-value" aria-labelledby="venta-label"><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:jugador?.id)}" /></span>
-					
-				</li>
-				</g:if>
-                          
-                          <li class="fieldcontain">
+                                <li class="fieldcontain">
 					<span id="costos-label" class="property-label"><g:message code="auto.costos.label" default="Detalles de Costos" /></span>
 					
 						<g:each in="${autoInstance.costos}" var="c">
@@ -116,8 +106,7 @@
                                                 
                           <span class="property-value" aria-labelledby="costos-label"><g:link controller="costo" action="create" params="['auto.id': autoInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'costo.label', default: 'Costo')])}</g:link></span>
                                                 				
-                          </li>
-                                
+                                </li>
 			
 			</ol>
 			<g:form>

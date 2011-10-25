@@ -9,26 +9,9 @@ class BootStrap {
         def rolAdmin = login.Rol.findByAuthority('ROLE_ADMIN') ?: new login.Rol(authority: 'ROLE_ADMIN').save(failOnError: true)
         def rolComprador = login.Rol.findByAuthority('ROLE_COMPRADOR') ?: new login.Rol(authority: 'ROLE_COMPRADOR').save(failOnError: true)
         def rolUser = login.Rol.findByAuthority('ROLE_USER') ?: new login.Rol(authority: 'ROLE_USER').save(failOnError: true)
-        
-//        def rolAdmin = login.Rol.findByAuthority('ROLE_ADMIN')
-//        if (login.Rol.count() != 3) {
-//            if (!rolAdmin) {
-//                rolAdmin = new login.Rol(authority: 'ROLE_ADMIN').save(flush:true)
-//            }
-//
-//            def rolComprador = login.Rol.findByAuthority('ROLE_COMPRADOR')
-//            if (!rolComprador) {
-//                rolComprador = new login.Rol(authority: 'ROLE_COMPRADOR').save(flush:true)
-//            }
-//            
-//            def rolUser = login.Rol.findByAuthority('ROLE_USER')
-//            if (!rolUser) {
-//                rolUser = new login.Rol(authority: 'ROLE_USER').save(flush:true)
-//            }
-//        }
-        
+              
         log.info "Validando usuarios"
-        def admin = login.UsuarioRol.findByRol(rolComprador)
+        def admin = login.UsuarioRol.findByRol(rolAdmin)
         if (!admin) {
             admin = new login.Usuario(
                 username:'admin',
@@ -40,7 +23,7 @@ class BootStrap {
                 email: 'admin@auto.com'
             )
             admin.save(flush:true)
-            login.UsuarioRol.create(admin, rolComprador, true)
+            login.UsuarioRol.create(admin, rolAdmin, true)
         }
 
         println("Aplicacion inicializada")

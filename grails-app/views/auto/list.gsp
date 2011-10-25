@@ -7,7 +7,6 @@
 		<g:set var="entityName" value="${message(code: 'auto.label', default: 'Auto')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
-        
 	<body>
 		<a href="#list-auto" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
@@ -15,17 +14,13 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			</ul>
 		</div>
-		
-                <div id="list-auto" class="content scaffold-list" role="main">
-			
-                  <h1><g:message code="auto.encuentraAuto"/></h1>
-			
-                        <g:if test="${flash.message}">
+		<div id="list-auto" class="content scaffold-list" role="main">
+			<h1>Autos en Venta</h1>
+			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-                  
-                  
-                  <div class="search">
+                        
+                        <div class="search">
                           <g:form method="post">
                             <div>
                               <table>
@@ -46,25 +41,23 @@
                             </div>
                           </g:form>
                   </div>
-			
-                        <table>
+                        
+			<table>
 				<thead>
 					<tr>
 					
 						<g:sortableColumn property="marca" title="${message(code: 'auto.marca.label', default: 'Marca')}" />
 					
-					
-						<g:sortableColumn property="color" title="${message(code: 'auto.color.label', default: 'Color')}" />
-					
+                                                <g:sortableColumn property="color" title="${message(code: 'auto.color.label', default: 'Color')}" />
 						<g:sortableColumn property="compra" title="${message(code: 'auto.compra.label', default: 'Precio')}" />
-					
+
 						<g:sortableColumn property="fechaDeModelo" title="${message(code: 'auto.fechaDeModelo.label', default: 'Fecha De Modelo')}" />
 					
 						<g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Modelo')}" />
-                                                
                                                 <g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Imagen')}" />
 					
                                                 <g:sortableColumn property="modelo" title="${message(code: 'auto.comprar.label', default: '   ')}" />
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -73,15 +66,13 @@
 					
 						<td>${fieldValue(bean: autoInstance, field: "marca")}</td>
 					
-					
 						<td>${fieldValue(bean: autoInstance, field: "color")}</td>
-					
-						<td>${fieldValue(bean: autoInstance, field: "venta")}</td>
+                                                <td>${fieldValue(bean: autoInstance, field: "venta")}</td>
 					
 						<td>${fieldValue(bean: autoInstance, field: "fechaDeModelo")}</td>
 					
+					
 						<td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
-                                                
                                                 <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:jugador?.id)}" /></td>
                                                 
                                                 <td><g:link action="compraAuto" id="${autoInstance.id}">Comprar</g:link></td>
