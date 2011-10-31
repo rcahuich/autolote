@@ -12,6 +12,8 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+                                
+                                
 			</ul>
 		</div>
 		<div id="list-auto" class="content scaffold-list" role="main">
@@ -48,12 +50,11 @@
 					
 						<g:sortableColumn property="marca" title="${message(code: 'auto.marca.label', default: 'Marca')}" />
 					
+						<g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Modelo')}" />
                                                 <g:sortableColumn property="color" title="${message(code: 'auto.color.label', default: 'Color')}" />
 						<g:sortableColumn property="compra" title="${message(code: 'auto.compra.label', default: 'Precio')}" />
 
-						<g:sortableColumn property="fechaDeModelo" title="${message(code: 'auto.fechaDeModelo.label', default: 'Fecha De Modelo')}" />
 					
-						<g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Modelo')}" />
                                                 <g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Imagen')}" />
 					
                                                 <g:sortableColumn property="modelo" title="${message(code: 'auto.comprar.label', default: '   ')}" />
@@ -65,17 +66,16 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
 						<td>${fieldValue(bean: autoInstance, field: "marca")}</td>
+						<td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
 					
 						<td>${fieldValue(bean: autoInstance, field: "color")}</td>
                                                 <td>${fieldValue(bean: autoInstance, field: "venta")}</td>
 					
-						<td>${fieldValue(bean: autoInstance, field: "fechaDeModelo")}</td>
 					
 					
-						<td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
-                                                <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:jugador?.id)}" /></td>
+                                                <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:autoInstance?.id)}" /></td>
                                                 
-                                                <td><g:link action="compraAuto" id="${autoInstance.id}">Comprar</g:link></td>
+                                                <td><g:link action="verMas" id="${autoInstance.id}">Ver más</g:link></td>
 					
 					</tr>
 				</g:each>

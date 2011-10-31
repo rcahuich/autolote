@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 
 
 class UsuarioController {
@@ -24,30 +25,47 @@ class UsuarioController {
         [usuarioInstanceList: Usuario.list(params), usuarioInstanceTotal: Usuario.count()]
     }
 
-    
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
     def create() {
-        [usuarioInstance: new Usuario(params)]
+        def usuario = new Usuario()
+        usuario.properties = params
+        def roles = obtieneListaDeRoles(null)
+        [usuarioInstance: usuario, roles: roles]
     }
-
+    
     def save() {
         
         def usuario
         try {
             Usuario.withTransaction {
                 usuario = new Usuario(params)
-                println("------------ $usuario.password")
-                //usuario.password = springSecurityService.encodePassword(params.password)
                 
-                def roles = [] as Set
+                    def roles = asignaRoles(params)
+                    def roles2 = [] as Set
+                    
+                    if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN')){
+                        println("==== roladmin")
+                        println("==== aut $roles")
+                        usuario = usuarioService.crea(usuario, roles)
+                        flash.message = message(code: "Has registrado correctamente al usuario")
+                        redirect(action:'show', id: usuario.id)
+                    }else
+                    if(SpringSecurityUtils.ifAnyGranted('ROLE_VENDEDOR')){
+                        roles2 << Rol.findByAuthority('ROLE_COMPRADOR')
+                        println("==== rolvendedor")
+                        println("==== aut $roles2")
+                        usuario = usuarioService.crea(usuario, roles2)
+                        flash.message = message(code: "Has registrado correctamente al usuario")
+                        redirect(action:'show', id: usuario.id)
+                    }else{
+                        roles2 << Rol.findByAuthority('ROLE_VENDEDOR')
+                        println("==== otro rol")
+                        println("==== aut $roles2")
+                        usuario = usuarioService.crea(usuario, roles2)
+                        flash.message = message(code: "Has sido registrado!, por favor inicia sesión")
+                        redirect(controller:'login', action:'auth')
+                    }
                 
-                roles << Rol.findByAuthority('ROLE_COMPRADOR')
-                
-                usuario = usuarioService.crea(usuario, roles)
-                
-                println("------------ $usuario")
-                
-                flash.message = message(code:"usuario.crea",args:[usuario])
-                redirect(uri:'/')
             }
         } catch(Exception e) {
             log.error("No se pudo crear el usuario",e)
@@ -58,18 +76,10 @@ class UsuarioController {
             render(view:"create", model: [usuario: usuario])
         }
     
-        
-    
-//        def usuarioInstance = new Usuario(params)
-//        if (!usuarioInstance.save(flush: true)) {
-//            render(view: "create", model: [usuarioInstance: usuarioInstance])
-//            return
-//        }
-//
-//		flash.message = message(code: 'default.created.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuarioInstance.id])
-//        redirect(action: "show", id: usuarioInstance.id)
+
     }
 
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
     def show() {
         def usuarioInstance = Usuario.get(params.id)
         if (!usuarioInstance) {
@@ -144,8 +154,57 @@ class UsuarioController {
         }
     }
     
-    def verficaInicio = {
-         println("Necesita Loguearse")
+    def asignaRoles = { params ->
+        def roles = [] as Set
+        if (params.ROLE_ADMIN) {
+            roles << Rol.findByAuthority('ROLE_ADMIN')
+        } else if (params.ROLE_VENDEDOR) {
+            roles << Rol.findByAuthority('ROLE_VENDEDOR')
+        } else if (params.ROLE_COMPRADOR) {
+            roles << Rol.findByAuthority('ROLE_COMPRADOR')
+        } else {
+            roles << Rol.findByAuthority('ROLE_USER')
+        }
+        return roles
     }
+    
+    def obtieneListaDeRoles = { usuario ->
+        log.debug "Obteniendo lista de roles"
+        def roles = Rol.list()
+
+        def rolesFiltrados = [] as Set
+        if (SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN')) {
+            log.debug "Roles para ADMIN"
+            rolesFiltrados = roles
+        } else if(SpringSecurityUtils.ifAnyGranted('ROLE_VENDEDOR')) {
+            log.debug "Roles para VENDEDOR"
+            for(rol in roles) {
+                if (!rol.authority.equals('ROLE_ADMIN') && !rol.authority.equals('ROLE_VENDEDOR')) {
+                    rolesFiltrados << rol
+                }
+            }
+        } else if(SpringSecurityUtils.ifAnyGranted('ROLE_COMPRADOR')) {
+            log.debug "Roles para COMPRADOR"
+            for(rol in roles) {
+                if (rol.authority.equals('ROLE_USER')) {
+                    rolesFiltrados << rol
+                }
+            }
+        }
+        roles = rolesFiltrados
+        roles.sort { r1, r2 ->
+            r1.authority <=> r2.authority
+        }
+        Set userRoleNames = []
+        for (role in usuario?.authorities) {
+            userRoleNames << role.authority
+        }
+        LinkedHashMap<Rol, Boolean> roleMap = [:]
+        for (role in roles) {
+            roleMap[(role)] = userRoleNames.contains(role.authority)
+        }
+        return roleMap
+    }
+    
     
 }

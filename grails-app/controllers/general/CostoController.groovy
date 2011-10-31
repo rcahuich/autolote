@@ -1,5 +1,8 @@
 package general
 
+import javax.sql.DataSource
+import groovy.sql.Sql
+
 import org.springframework.dao.DataIntegrityViolationException
 
 class CostoController {
@@ -32,12 +35,13 @@ class CostoController {
 
     def show() {
         def costoInstance = Costo.get(params.id)
+        
         if (!costoInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'costo.label', default: 'Costo'), params.id])
             redirect(action: "list")
             return
         }
-
+        
         [costoInstance: costoInstance]
     }
 

@@ -18,7 +18,10 @@
   
       <ul>
         	<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link controller="auto"><g:message code="inventario.label" default="Autos en Venta" /></g:link></li>
+      
+                <sec:ifAllGranted roles="ROLE_COMPRADOR">
+                        <li><g:link controller="auto"><g:message code="inventario.label" default="Autos en Venta" /></g:link></li>
+                </sec:ifAllGranted>
         </ul>
                     
                 </div>
@@ -85,9 +88,9 @@
 
                             <td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
                             
-                            <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:jugador?.id)}" /></td>
+                            <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:autoInstance?.id)}" /></td>
                             
-                            <td><g:link action="compraAuto" id="${autoInstance.id}">Comprar</g:link></td>
+                            <td><g:link action="verMas" id="${autoInstance.id}">Ver más</g:link></td>
                         </tr>
                     </g:each>
                     </tbody>

@@ -18,7 +18,10 @@
   
       <ul>
         	<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+      
+                <sec:ifAllGranted roles="ROLE_VENDEDOR">
+                        <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+                </sec:ifAllGranted>
         </ul>
                     
                 </div>
@@ -38,7 +41,7 @@
                           <label for="filtro"><g:message code="entrada.buscar" default="Buscar"/>:</label>
                         </td>
                         <td style="width:50px; vertical-align: middle;">
-                          <g:select id="filtro" name="filtro" from="${['VENDIDO', 'LOTE', 'TALLER']}" value="${params.filtro}" />
+                          <g:select id="filtro" name="filtro" from="${['EN VENTA','VENDIDO', 'LOTE', 'TALLER']}" value="${params.filtro}" />
                         </td>
                         <td>
                           <g:actionSubmit action="buscaAuto" value="Buscar" class="save" style="vertical-align: middle;" />
@@ -86,7 +89,7 @@
 
                             <td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
                             
-                            <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:jugador?.id)}" /></td>
+                            <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:autoInstance?.id)}" /></td>
                         </tr>
                     </g:each>
                     </tbody>

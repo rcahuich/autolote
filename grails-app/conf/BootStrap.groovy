@@ -4,11 +4,11 @@ class BootStrap {
 
     def init = { servletContext ->
         println("Inicializando aplicacion")
-        println("Validando roles")
         
+        println("Validando roles")
         def rolAdmin = login.Rol.findByAuthority('ROLE_ADMIN') ?: new login.Rol(authority: 'ROLE_ADMIN').save(failOnError: true)
+        def rolVendedor = login.Rol.findByAuthority('ROLE_VENDEDOR') ?: new login.Rol(authority: 'ROLE_VENDEDOR').save(failOnError: true)
         def rolComprador = login.Rol.findByAuthority('ROLE_COMPRADOR') ?: new login.Rol(authority: 'ROLE_COMPRADOR').save(failOnError: true)
-        def rolUser = login.Rol.findByAuthority('ROLE_USER') ?: new login.Rol(authority: 'ROLE_USER').save(failOnError: true)
               
         log.info "Validando usuarios"
         def admin = login.UsuarioRol.findByRol(rolAdmin)

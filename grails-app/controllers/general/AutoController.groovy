@@ -16,19 +16,19 @@ class AutoController {
         redirect(action: "list", params: params)
     }
 
-    
+    //Lista principal de autos en venta
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def resultado = autoService.buscaAutosEnVenta(params)
         [autoInstanceList: resultado.lista, autoInstanceTotal: resultado.cantidad]
     }
     
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
     def create() {
         [autoInstance: new Auto(params)]
     }
 
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
     def save() {
 
         def autoInstance
@@ -36,24 +36,24 @@ class AutoController {
         Auto.withTransaction{
          autoInstance = new Auto(params)
          
-//        println("imagen ----- $params.imagen")
-//        def archivo = request.getFile('imagen')
-//                if (!archivo.empty) {
-//                    byte[] f = archivo.bytes
-//                    def imagen = new Imagen(
-//                        nombre : archivo.originalFilename
-//                        , tipoContenido : archivo.contentType
-//                        , tamano : archivo.size
-//                        , archivo : f
-//                    )
-//                    if (jugador.imagenes) {
-//                        jugador.imagenes?.clear()
-//                    } else {
-//                        jugador.imagenes = []
-//                    }
-//                    jugador.imagenes << imagen
-//                    jugador.save()
-//           }
+        println("imagen ----- $params.imagen")
+        def archivo = request.getFile('imagen')
+                if (!archivo.empty) {
+                    byte[] f = archivo.bytes
+                    def imagen = new Imagen(
+                        nombre : archivo.originalFilename
+                        , tipoContenido : archivo.contentType
+                        , tamano : archivo.size
+                        , archivo : f
+                    )
+                    if (autoInstance.imagenes) {
+                        aautoInstanceuto.imagenes?.clear()
+                    } else {
+                        autoInstance.imagenes = []
+                    }
+                    autoInstance.imagenes << imagen
+                    //auto.save()
+           }
 
                 
            autoInstance = autoService.crea(autoInstance)
@@ -73,7 +73,7 @@ class AutoController {
            }
     }
 
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR','ROLE_USER'])
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR','ROLE_COMPRADOR'])
     def show() {
         def autoInstance = Auto.get(params.id)
         if (!autoInstance) {
@@ -84,8 +84,30 @@ class AutoController {
 
         [autoInstance: autoInstance]
     }
+    
+    def verMas() {
+        def autoInstance = Auto.get(params.id)
+        if (!autoInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'auto.label', default: 'Auto'), params.id])
+            redirect(action: "list")
+            return
+        }
 
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
+        [autoInstance: autoInstance]
+    }
+    
+    def finCompra() {
+        def autoInstance = Auto.get(params.id)
+        if (!autoInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'auto.label', default: 'Auto'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        [autoInstance: autoInstance]
+    }
+
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
     def edit() {
         def autoInstance = Auto.get(params.id)
         if (!autoInstance) {
@@ -97,7 +119,7 @@ class AutoController {
         [autoInstance: autoInstance]
     }
 
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR','ROLE_COMPRADOR'])
     def update() {
         def autoInstance = Auto.get(params.id)
         if (!autoInstance) {
@@ -128,7 +150,7 @@ class AutoController {
         redirect(action: "show", id: autoInstance.id)
     }
 
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
+    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR','ROLE_COMPRADOR'])
     def delete() {
         def autoInstance = Auto.get(params.id)
         if (!autoInstance) {
@@ -148,7 +170,7 @@ class AutoController {
         }
     }
     
-    @Secured(['ROLE_ADMIN','ROLE_COMPRADOR'])
+    //Lista de Autos del usuario
     def buscaAuto = {
         def autoInstance = Auto.get(params.id)
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -156,7 +178,7 @@ class AutoController {
         [autoInstanceList : resultado.listas, autoInstanceTotal: Auto.count()]
     }
     
-   
+    //Busqueda de autos para comprar
     def encuentraAuto = {
         def autoInstance = Auto.get(params.id)
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -164,40 +186,37 @@ class AutoController {
         [autoInstanceList : resultado.listas, autoInstanceTotal: resultado.cantidad]
     }
     
-   
+    //Clik en comprar auto
     def compraAuto = {
-        if (springSecurityService.isLoggedIn()) {
+        if (springSecurityService.isLoggedIn()){
             def autoOtro = Auto.get(params.id)
             autoOtro.status = "VENDIDO"
             
-            def autoNuevo = new Auto(
-                marca: autoOtro.marca,
-                modelo: autoOtro.modelo,
-                fechaDeModelo: autoOtro.fechaDeModelo,
-                color: autoOtro.color,
-                status: "LOTE",
-                compra: autoOtro.venta,
-                venta: new BigDecimal("0.00")
-            )
+//            def autoNuevo = new Auto(
+//                marca: autoOtro.marca,
+//                modelo: autoOtro.modelo,
+//                fechaDeModelo: autoOtro.fechaDeModelo,
+//                color: autoOtro.color,
+//                status: "LOTE",
+//                compra: autoOtro.venta,
+//                venta: new BigDecimal("0.00")
+//            )
+//            
+//            def nue = autoService.crea(autoNuevo)
             
-            def nue = autoService.crea(autoNuevo)
-            
-            //autoOtro.update()
-            
-            flash.message = message(code: 'ninguno.ninguno', args: [nue])
-            redirect(action: "show", id: autoNuevo.id)
-            
-            
+            //flash.message = message(code: "¡Ahora ya eres dueño de este Automovil! ¡Felicidades!")
+            //flash.message = message(code: 'ninguno.ninguno', args: [nue])
+            redirect(action: "finCompra", id: autoOtro.id)
       }
       else {
           println("NO esta logueado")
             //redirect(uri:'/usuario/verificaInicio.gsp')
-            redirect(controller:"usuario", action: "verficaInicio")
+            redirect(controller:'login', action: 'verficaInicio')
       }
     }
     
      
-    
+    //Imagen del auto
     def imagen = {
                 try {
                     def auto = Auto.get(params.id)

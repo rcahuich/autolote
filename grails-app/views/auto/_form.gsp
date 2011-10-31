@@ -58,3 +58,13 @@
 	<g:field type="number" name="venta" required="" value="${fieldValue(bean: autoInstance, field: 'venta')}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: autoInstance, field: 'imagenes', 'error')} ">
+                                     
+      <label for="imagen"><g:message code="auto.imagen"/></label>
+      <label>
+        <td valign="top" class="value ${hasErrors(bean: auto, field: 'imagenes', 'errors')}">
+            <input type="file" name="imagen" />
+        </td>
+      </label>
+
+</div>

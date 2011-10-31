@@ -47,7 +47,7 @@
 		<g:message code="usuario.telefono.label" default="Telefono" />
 		
 	</label>
-        <g:textField name="telefono" pattern="${usuarioInstance.constraints.telefono.matches}" value="${usuarioInstance?.telefono}"/>
+        <g:textField name="telefono" value="${usuarioInstance?.telefono}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: usuarioInstance, field: 'email', 'error')} required">
@@ -78,16 +78,6 @@
 </div>
 </sec:ifAllGranted>
 
-<sec:ifAllGranted roles="ROLE_ADMIN,ROLE_COMPRADOR">
-<div class="fieldcontain ${hasErrors(bean: usuarioInstance, field: 'autos', 'error')} ">
-	<label for="autos">
-		<g:message code="usuario.autos.label" default="Autos" />
-		
-	</label>
-	<g:select name="autos" from="${general.Auto.list()}" multiple="multiple" optionKey="id" size="5" value="${usuarioInstance?.autos*.id}" class="many-to-many"/>
-</div>
-</sec:ifAllGranted>
-
 <sec:ifAllGranted roles="ROLE_ADMIN">
 <div class="fieldcontain ${hasErrors(bean: usuarioInstance, field: 'enabled', 'error')} ">
 	<label for="enabled">
@@ -106,4 +96,20 @@
 	</label>
 	<g:checkBox name="passwordExpired" value="${usuarioInstance?.passwordExpired}" />
 </div>
+</sec:ifAllGranted>
+
+<sec:ifAllGranted roles="ROLE_ADMIN">
+  <g:if test="${roles}">
+    <div class="fieldcontain ${hasErrors(bean: usuario, field: 'authorities', 'error')}">
+        <g:set var="contador" value="${1}" />
+        <g:each var="entry" in="${roles}">
+            <label for="${entry.key.authority}">
+                <g:if test="${contador++ == 1}">
+                    <g:message code="usuario.authorities.label" default="Authorities" />
+                </g:if>
+            </label>
+            <g:checkBox name="${entry.key.authority}" value="${entry.value}"/> ${entry.key.authority}<br/>
+        </g:each>
+    </div>
+   </g:if>
 </sec:ifAllGranted>

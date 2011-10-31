@@ -250,6 +250,10 @@ fieldset,
         font-size: 15px;
 }
 
+.fieldcontain .foto {
+	margin-left: 20%;
+}
+
 label {
 	cursor: pointer;
 	display: inline-block;
@@ -580,7 +584,7 @@ th:hover, tr:hover {
 	text-decoration: underline;
 }
 
-.buttons .delete, .buttons .edit, .buttons .save {
+.buttons .delete, .buttons .edit, .buttons .save, .buttons .comprar {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
@@ -598,7 +602,20 @@ th:hover, tr:hover {
 	background-image: url(../images/skin/database_save.png);
 }
 
+.buttons .comprar {
+	background-image: url(../images/skin/boton_comprar.gif);
+        padding: 1.00em 0.7em;
+        text-indent: 50px;
+}
+
 a.skip {
 	position: absolute;
 	left: -9999px;
+}
+
+/* slider */
+#slider2 {
+  width: 600px;
+  height: 350px;
+  list-style: none;
 }

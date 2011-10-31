@@ -87,10 +87,14 @@
 </head>
 
 <body>
+  <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+  </g:if>
+
 <div id='login'>
             <div class='inner'>
 		<div class='fheader' style="text-align: center; font-size: 15px;" >iniciar sesión</div>
-
+                
 		<g:if test='${flash.message}'>
 			<div class='login_message'>${flash.message}</div>
 		</g:if>

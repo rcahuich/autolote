@@ -50,8 +50,8 @@ class LoginController {
 
 		String view = 'auth'
 		String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
-		render view: view, model: [postUrl: postUrl,
-		                           rememberMeParameter: config.rememberMe.parameter]
+                println("========= $postUrl")
+		render view: view, model: [postUrl: postUrl, rememberMeParameter: config.rememberMe.parameter]
 	}
 
 	/**
@@ -60,17 +60,19 @@ class LoginController {
 	def authAjax = {
 		response.setHeader 'Location', SpringSecurityUtils.securityConfig.auth.ajaxLoginFormUrl
 		response.sendError HttpServletResponse.SC_UNAUTHORIZED
+                
+                println("========= AUTHAJAX")
 	}
 
 	/**
 	 * Show denied page.
 	 */
 	def denied = {
-		if (springSecurityService.isLoggedIn() &&
-				authenticationTrustResolver.isRememberMe(SCH.context?.authentication)) {
+		if (springSecurityService.isLoggedIn() && authenticationTrustResolver.isRememberMe(SCH.context?.authentication)) {
 			// have cookie but the page is guarded with IS_AUTHENTICATED_FULLY
 			redirect action: 'full', params: params
 		}
+                println("========= DENIED")
 	}
 
 	/**
@@ -81,13 +83,15 @@ class LoginController {
 		render view: 'auth', params: params,
 			model: [hasCookie: authenticationTrustResolver.isRememberMe(SCH.context?.authentication),
 			        postUrl: "${request.contextPath}${config.apf.filterProcessesUrl}"]
+                            println("========= FULL")
 	}
 
 	/**
 	 * Callback after a failed login. Redirects to the auth page with a warning message.
 	 */
 	def authfail = {
-
+                
+                println("========= AUTHFAIL")
 		def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
 		String msg = ''
 		def exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
@@ -122,6 +126,7 @@ class LoginController {
 	 * The Ajax success redirect url.
 	 */
 	def ajaxSuccess = {
+                println("========= AJAX SUCCESS")
 		render([success: true, username: springSecurityService.authentication.name] as JSON)
 	}
 
@@ -129,6 +134,11 @@ class LoginController {
 	 * The Ajax denied redirect url.
 	 */
 	def ajaxDenied = {
+                println("========= AJAX DENIED")
 		render([error: 'access denied'] as JSON)
 	}
+        
+    def verficaInicio = {
+         println("Necesita Loguearse")
+    }
 }

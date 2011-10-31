@@ -21,7 +21,7 @@
 			</ul>
 		</div>
 		<div id="show-auto" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+			<h1>Detalles del Auto</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -61,16 +61,7 @@
 				</li>
 				</g:if>
                                 
-				<g:if test="${autoInstance?.status}">
-				<li class="fieldcontain">
-					<span id="status-label" class="property-label"><g:message code="auto.status.label" default="Status" /></span>
-					
-						<span class="property-value" aria-labelledby="status-label"><g:fieldValue bean="${autoInstance}" field="status"/></span>
-					
-				</li>
-				</g:if>
-                                
-				<g:if test="${autoInstance?.color}">
+                                <g:if test="${autoInstance?.color}">
 				<li class="fieldcontain">
 					<span id="color-label" class="property-label"><g:message code="auto.color.label" default="Color" /></span>
 					
@@ -78,19 +69,8 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${autoInstance?.compra}">
-				<li class="fieldcontain">
-					<span id="compra-label" class="property-label"><g:message code="auto.compra.label" default="Compra" /></span>
-					
-						<span class="property-value" aria-labelledby="compra-label"><g:fieldValue bean="${autoInstance}" field="compra"/></span>
-					
-				</li>
-				</g:if>
-			
-			
-			
-				<g:if test="${autoInstance?.venta}">
+                        
+                                <g:if test="${autoInstance?.venta}">
 				<li class="fieldcontain">
 					<span id="venta-label" class="property-label"><g:message code="auto.venta.label" default="Precio" /></span>
 					
@@ -99,24 +79,12 @@
 				</li>
 				</g:if>
                                 
-                                <li class="fieldcontain">
-					<span id="costos-label" class="property-label"><g:message code="auto.costos.label" default="Detalles de Costos" /></span>
-					
-						<g:each in="${autoInstance.costos}" var="c">
-						<span class="property-value" aria-labelledby="costos-label">${c}</span>
-						</g:each>
-                                                
-                                        <span class="property-value" aria-labelledby="costos-label"><g:link controller="costo" action="create" params="['auto.id': autoInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'costo.label', default: 'Costo')])}</g:link></span>
-                                                				
-                                </li>
-                                
 			
 			</ol>
 			<g:form>
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${autoInstance?.id}" />
-					<g:link class="edit" action="edit" id="${autoInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                                        <g:link class="comprar" action="compraAuto" id="${autoInstance.id}"><h3>Comprar</h3></g:link>
 				</fieldset>
 			</g:form>
 		</div>

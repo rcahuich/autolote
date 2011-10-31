@@ -99,11 +99,20 @@ log4j = {
            'grails.app.resourceMappers.org.grails.plugin.resource'
 }
 
+grails.gorm.default.mapping = {
+   cache true
+   id generator:'identity'
+}
+
+grails.gorm.failOnError = true
+
+
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'login.Usuario'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'login.UsuarioRol'
 grails.plugins.springsecurity.authority.className = 'login.Rol'
 grails.plugins.springsecurity.roleHierarchy = '''
-   ROLE_ADMIN > ROLE_COMPRADOR
+   ROLE_ADMIN > ROLE_VENDEDOR
+   ROLE_VENDEDOR > ROLE_COMPRADOR
    ROLE_COMPRADOR > ROLE_USER
 '''
