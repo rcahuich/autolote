@@ -87,7 +87,6 @@ class UsuarioController {
             redirect(action: "list")
             return
         }
-
         [usuarioInstance: usuarioInstance]
     }
 
@@ -99,8 +98,9 @@ class UsuarioController {
             redirect(action: "list")
             return
         }
-
-        [usuarioInstance: usuarioInstance]
+        def roles = obtieneListaDeRoles(null)
+        
+        [usuarioInstance: usuarioInstance, roles:roles]
     }
 
     @Secured(['ROLE_ADMIN'])
@@ -122,15 +122,28 @@ class UsuarioController {
                 return
             }
         }
-
+        if (usuarioInstance.password != params.password) {
+                    usuarioInstance.password = params.password
+                }
+                
+        params.remove('password')
         usuarioInstance.properties = params
+        
+        def roles = asignaRoles(params)
+                    
+        println("==== roladmin")
+        println("==== aut $roles")
+        usuarioInstance = usuarioService.crea(usuarioInstance, roles)
+        flash.message = message(code: "Has actualizado correctamente al usuario")
+        //redirect(action:'show', id: usuario.id)
+        
 
         if (!usuarioInstance.save(flush: true)) {
             render(view: "edit", model: [usuarioInstance: usuarioInstance])
             return
         }
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuarioInstance.id])
+	//flash.message = message(code: 'default.updated.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuarioInstance.id])
         redirect(action: "show", id: usuarioInstance.id)
     }
 
