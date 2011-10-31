@@ -12,11 +12,11 @@ class Usuario {
 	Date fechaDeNacimiento
 	String email
 	String telefono 
-        boolean enabled = true
+    boolean enabled = true
 	boolean accountExpired = false
 	boolean accountLocked = false
 	boolean passwordExpired = false
-        Set autos
+    Set autos
 
         static hasMany = [autos:Auto]
         

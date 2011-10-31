@@ -25,7 +25,7 @@ class UsuarioController {
         [usuarioInstanceList: Usuario.list(params), usuarioInstanceTotal: Usuario.count()]
     }
 
-    @Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
+    //@Secured(['ROLE_ADMIN','ROLE_VENDEDOR'])
     def create() {
         def usuario = new Usuario()
         usuario.properties = params
@@ -58,7 +58,7 @@ class UsuarioController {
                         flash.message = message(code: "Has registrado correctamente al usuario")
                         redirect(action:'show', id: usuario.id)
                     }else{
-                        roles2 << Rol.findByAuthority('ROLE_VENDEDOR')
+                        roles2 << Rol.findByAuthority('ROLE_COMPRADOR')
                         println("==== otro rol")
                         println("==== aut $roles2")
                         usuario = usuarioService.crea(usuario, roles2)

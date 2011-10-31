@@ -1,15 +1,18 @@
 package general
+import general.*
 import login.*
 
-import static org.junit.Assert.*
+import grails.test.*
+import grails.test.mixin.*
 import org.junit.*
 
-class AutoTests {
+@TestFor(AutoController)
+class AutoControllerIntegrationTests {
 
     @Test
     void listaAuto() {
         // Setup logic here
-        println "Entrando a creaAuto"
+        println "Entrando a Lista de Autos en Venta"
 
         def usuario = new Usuario(
                 username:'otro',
@@ -25,9 +28,6 @@ class AutoTests {
         assertNotNull usuario.id
             
         for(i in 1..20){
-            def cont = i
-            cont++
-            println("-- $i --")
             def auto = new Auto(
                     marca: "Nissan",
                     modelo: "Sentra",
@@ -36,7 +36,7 @@ class AutoTests {
                     status: "LOTE",
                     compra: new BigDecimal(100),
                     venta: new BigDecimal(100),
-                    usuario: usuario
+                    usuario: usuario,
                 ).save(flus:true)
                 
             assertNotNull auto
@@ -46,20 +46,20 @@ class AutoTests {
 //        def controller = new AutoController()
 //        controller.index()
 //        assertEquals '/auto/list', controller.response.redirectedUrl
-        
+//        
 //        def model = controller.list()
 //        assertEquals 10, model.autoInstanceList.size()
 //        assert 20 <= model.autoInstanceTotal
 
             def lista = Auto.list()
-            println("-- ${lista.size()}")
-            assertEquals 22, lista.size()
+            assertEquals 20, lista.size()
         
         println "Paso prueba"
     }
     
-    void creaAuto(){
-        
+    @Test
+    void creaAuto() {
+        println "Entrando a creaAuto"
         def usuario = new Usuario(
                 username:'otro',
                 password:'otro',
@@ -70,9 +70,17 @@ class AutoTests {
                 email: 'admin@auto.com'
             ).save()
             
-        assertNotNull usuario
-        assertNotNull usuario.id
+        //assertNotNull usuario
+        //assertNotNull usuario.id
         
+        def imagen2 = new Imagen(
+            nombre: 'Imagen',
+            tipoContenido: 'jpg',
+            tamano: 12345,
+            archivo:10000000
+        ).save()
+        
+        println "--------- $imagen2"
         def auto = new Auto(
                     marca: "Nissan",
                     modelo: "Sentra",
@@ -80,23 +88,24 @@ class AutoTests {
                     color: "Blanco",
                     status: "LOTE",
                     compra: new BigDecimal(100),
-                    venta: new BigDecimal(100)
+                    venta: new BigDecimal(100),
+                    usuario: usuario,
+                    imagen: imagen2
             ).save()
-            
+        
+        println "--------- $auto"
+        
         def controller = new AutoController()
         def model = controller.create()
         assert model
-        assert model.auto
+        assert model.autoInstance
         
         controller.params.marca = 'Nissan'
-        controller.params.modelo = 'Sentra'
-        controller.params.fechaDeModelo = '2007'
-        controller.params.color = 'Blanco'
         controller.params.status = 'LOTE'
-        controller.params.compra = new BigDecimal(100)
-        controller.params.venta = new BigDecimal(100)
         controller.save()
         
+        assert controller.response.redirectedUrl.startsWith('/auto/show')
+        println "Paso prueba"
     }
     
     

@@ -14,10 +14,14 @@ class AutoService {
     }
     
     def encuntraAut(def params){
-        def usuario = Usuario.get(springSecurityService.getPrincipal().id)
         def autos
-        if(params?.filtro){
-            autos = Auto.executeQuery("select auto from Auto auto where auto.status = 'EN VENTA' and auto.marca = :filtro and auto.usuario != :currentUser", [filtro:params.filtro, currentUser:usuario])
+        if(springSecurityService.isLoggedIn()){
+            if(params?.filtro){
+                def usuario = Usuario.get(springSecurityService.getPrincipal().id)
+                autos = Auto.executeQuery("select auto from Auto auto where auto.status = 'EN VENTA' and auto.marca = :filtro and auto.usuario != :currentUser", [filtro:params.filtro, currentUser:usuario])
+            } 
+        }else{
+                autos = Auto.executeQuery("select auto from Auto auto where auto.status = 'EN VENTA' and auto.marca = :filtro", [filtro:params.filtro])
         }
         println(" =============  ${autos} ======")
         def autoSize = autos.size()

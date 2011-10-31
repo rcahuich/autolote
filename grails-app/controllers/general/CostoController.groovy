@@ -29,7 +29,7 @@ class CostoController {
             return
         }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'costo.label', default: 'Costo'), costoInstance.id])
+	flash.message = message(code: "Has agregado un nuevo costo al auto")
         redirect(controller:"auto", action: "show", id: costoInstance.auto.id)
     }
 

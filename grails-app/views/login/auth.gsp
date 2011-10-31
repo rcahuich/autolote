@@ -7,7 +7,7 @@
 		margin: 15px 0px;
 		padding: 0px;
 		text-align: center;
-                font-family: fantasy;
+                font-family: calibri;
                 font-size: 13px;
 	}
 
@@ -30,7 +30,6 @@
 		margin: 0px 0 14px 0;
 		color: #2e3741;
 		font-size: 18px;
-		font-weight: bold;
 	}
 
 	#login .inner .cssform p {
@@ -47,7 +46,6 @@
 	}
 
 	#login .inner .cssform label {
-		font-weight: bold;
 		float: left;
 		text-align: right;
 		margin-left: -105px;

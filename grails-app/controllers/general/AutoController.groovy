@@ -58,7 +58,8 @@ class AutoController {
                 
            autoInstance = autoService.crea(autoInstance)
            
-           flash.message = message(code: 'default.created.message', args: [message(code: 'auto.label', default: 'Auto'), autoInstance.id])
+           flash.message = message(code: "Has dado de alta tu auto, y ya esta en la lista de Ventas")
+           //flash.message = message(code: 'default.created.message', args: [message(code: 'auto.label', default: 'Auto'), autoInstance.id])
            redirect(action: "show", id: autoInstance.id)
            
         
