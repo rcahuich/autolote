@@ -95,7 +95,6 @@
                     
                     </ul>
                 </div>
-                  
                 <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
                 </g:if>
@@ -125,10 +124,12 @@
                                   </g:hasErrors>
 
                                   <g:form url="[controller:'usuario', action:'save']" >
+                                          <g:hiddenField name="autoId" value="${usuarioInstance?.auto?.id}" />
                                           <fieldset class="form">
                                                   <g:render template="/usuario/form"/>
                                           </fieldset>
                                           <fieldset class="buttons">
+                                                  
                                                   <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
                                           </fieldset>
                                   </g:form>

@@ -26,7 +26,7 @@
                     
                 </div>
         <div id="list-auto" class="content scaffold-list" role="main">
-            <h1><g:message code="auto.buscaAuto"/></h1>
+            <h1>Autos</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -63,13 +63,15 @@
 
                             <g:sortableColumn property="color" title="${message(code: 'auto.color.label', default: 'Color')}" />
 
-                            <g:sortableColumn property="compra" title="${message(code: 'auto.compra.label', default: 'Compra')}" />
+                            <g:sortableColumn property="compra" title="${message(code: 'auto.compra.label', default: 'Precio')}" />
 
                             <g:sortableColumn property="fechaDeModelo" title="${message(code: 'auto.fechaDeModelo.label', default: 'Fecha De Modelo')}" />
 
                             <g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Modelo')}" />
                             
                             <g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Imagen')}" />
+                            
+                            <g:sortableColumn property="modelo" title="${message(code: 'auto.modelo.label', default: 'Vendedor')}" />
                             
                         </tr>
                     </thead>
@@ -83,13 +85,15 @@
 
                             <td>${fieldValue(bean: autoInstance, field: "color")}</td>
 
-                            <td>${fieldValue(bean: autoInstance, field: "compra")}</td>
+                            <td>${fieldValue(bean: autoInstance, field: "venta")}</td>
 
                             <td>${fieldValue(bean: autoInstance, field: "fechaDeModelo")}</td>
 
                             <td>${fieldValue(bean: autoInstance, field: "modelo")}</td>
                             
                             <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:autoInstance?.id)}" /></td>
+                            
+                            <td>${fieldValue(bean: autoInstance, field: "usuario.nombre")}</td>
                         </tr>
                     </g:each>
                     </tbody>

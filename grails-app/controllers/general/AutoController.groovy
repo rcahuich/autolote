@@ -189,8 +189,10 @@ class AutoController {
     
     //Clik en comprar auto
     def compraAuto = {
+            
+        def autoOtro = Auto.get(params.id)
+            
         if (springSecurityService.isLoggedIn()){
-            def autoOtro = Auto.get(params.id)
             autoOtro.status = "VENDIDO"
             
 //            def autoNuevo = new Auto(
@@ -212,8 +214,16 @@ class AutoController {
       else {
           println("NO esta logueado")
             //redirect(uri:'/usuario/verificaInicio.gsp')
-            redirect(controller:'login', action: 'verficaInicio')
+            redirect(action: 'verficaInicio', id: autoOtro.id)
+            //render(view:'verficaInicio', autoId: params.id)
       }
+    }
+    
+    def verficaInicio = {
+         println("Necesita Loguearse")
+         def autoOtro = Auto.get(params.id)
+         println("params ========== $params")
+         println("params ========== $autoOtro")
     }
     
      

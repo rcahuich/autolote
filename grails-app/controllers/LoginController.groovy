@@ -138,7 +138,5 @@ class LoginController {
 		render([error: 'access denied'] as JSON)
 	}
         
-    def verficaInicio = {
-         println("Necesita Loguearse")
-    }
+    
 }

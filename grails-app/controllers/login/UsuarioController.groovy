@@ -40,6 +40,7 @@ class UsuarioController {
             Usuario.withTransaction {
                 usuario = new Usuario(params)
                 
+                    println("==== auto $params.autoId")
                     def roles = asignaRoles(params)
                     def roles2 = [] as Set
                     
@@ -62,8 +63,11 @@ class UsuarioController {
                         println("==== otro rol")
                         println("==== aut $roles2")
                         usuario = usuarioService.crea(usuario, roles2)
-                        flash.message = message(code: "Has sido registrado!, por favor inicia sesión")
-                        redirect(controller:'login', action:'auth')
+                        springSecurityService.reauthenticate(usuario.username)
+                        flash.message = message(code: "¡Bienvenido! Gracias por registrarte, ya puedes empezar a disfrutar de nuestros beneficios.")
+                        redirect(uri: '/')
+                        //redirect(controller:'auto', action:'show', id: usuario.auto.autoId)
+                        //redirect(uri:"/j_acegi_security_check?j_username=${usuario.username}&j_password=${usuario.password}")
                     }
                 
             }
