@@ -73,7 +73,7 @@
 					
 					
 					
-                                                <td><img style="width: 115px; height: 130px;" src="${createLink(action:'imagen',id:autoInstance?.id)}" /></td>
+                                                <td><img style="width: 180px; height: 120px;" src="${createLink(action:'imagen',id:autoInstance?.id)}" /></td>
                                                 
                                                 <td><g:link action="verMas" id="${autoInstance.id}">Ver más</g:link></td>
 					

@@ -24,7 +24,6 @@ class AutoService {
         }else{
                 autos = Auto.executeQuery("select auto from Auto auto where auto.status = 'EN VENTA' and auto.marca = :filtro", [filtro:params.filtro])
         }
-        println(" =============  ${autos} ======")
         def autoSize = autos.size()
         return [listas:autos, cantidad:autoSize]
     }
@@ -42,16 +41,12 @@ class AutoService {
     Map buscaAutosEnVenta(params){
         
         if(springSecurityService.isLoggedIn()){
-            println("========== IF ==========")
             def usuario = Usuario.get(springSecurityService.getPrincipal().id)
             def autosV = Auto.executeQuery("select auto from Auto auto where auto.status = 'EN VENTA' and auto.usuario != :vendedor", [vendedor: usuario])
-            println("========== DATOS $autosV ==========")
             def cantidad = autosV.size()
             return [lista:autosV, cantidad:cantidad]        
         }else{
-            println("========== ELSE ==========")
             def autosV = Auto.executeQuery("select auto from Auto auto where auto.status = 'EN VENTA'")
-            println("========== DATOS $autosV ==========")
             def cantidad = autosV.size()
             return [lista:autosV, cantidad:cantidad]
         }

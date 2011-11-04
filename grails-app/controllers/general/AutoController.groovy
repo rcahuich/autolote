@@ -36,7 +36,6 @@ class AutoController {
         Auto.withTransaction{
          autoInstance = new Auto(params)
          
-        println("imagen ----- $params.imagen")
         def archivo = request.getFile('imagen')
                 if (!archivo.empty) {
                     byte[] f = archivo.bytes
@@ -194,21 +193,7 @@ class AutoController {
             
         if (springSecurityService.isLoggedIn()){
             autoOtro.status = "VENDIDO"
-            
-//            def autoNuevo = new Auto(
-//                marca: autoOtro.marca,
-//                modelo: autoOtro.modelo,
-//                fechaDeModelo: autoOtro.fechaDeModelo,
-//                color: autoOtro.color,
-//                status: "LOTE",
-//                compra: autoOtro.venta,
-//                venta: new BigDecimal("0.00")
-//            )
-//            
-//            def nue = autoService.crea(autoNuevo)
-            
-            //flash.message = message(code: "¡Ahora ya eres dueño de este Automovil! ¡Felicidades!")
-            //flash.message = message(code: 'ninguno.ninguno', args: [nue])
+
             redirect(action: "finCompra", id: autoOtro.id)
       }
       else {
@@ -220,10 +205,21 @@ class AutoController {
     }
     
     def verficaInicio = {
-         println("Necesita Loguearse")
          def autoOtro = Auto.get(params.id)
-         println("params ========== $params")
-         println("params ========== $autoOtro")
+    }
+    
+    @Secured(['ROLE_COMPRADOR'])
+    def verficaInicio2 = {
+        def autoOtro = Auto.get(params.id)
+         
+        
+        if (springSecurityService.isLoggedIn()){
+            redirect(action: 'verMas', id: autoOtro.id)
+        } else {
+          println("NO esta logueado")
+            flash.message = message(code: "No hemos localizado el Auto, intenta de nuevo")
+            redirect(uri:'/')
+      }
     }
     
      

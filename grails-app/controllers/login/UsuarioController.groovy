@@ -40,34 +40,25 @@ class UsuarioController {
             Usuario.withTransaction {
                 usuario = new Usuario(params)
                 
-                    println("==== auto $params.autoId")
                     def roles = asignaRoles(params)
                     def roles2 = [] as Set
                     
                     if(SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN')){
-                        println("==== roladmin")
-                        println("==== aut $roles")
                         usuario = usuarioService.crea(usuario, roles)
                         flash.message = message(code: "Has registrado correctamente al usuario")
                         redirect(action:'show', id: usuario.id)
                     }else
                     if(SpringSecurityUtils.ifAnyGranted('ROLE_VENDEDOR')){
                         roles2 << Rol.findByAuthority('ROLE_COMPRADOR')
-                        println("==== rolvendedor")
-                        println("==== aut $roles2")
                         usuario = usuarioService.crea(usuario, roles2)
                         flash.message = message(code: "Has registrado correctamente al usuario")
                         redirect(action:'show', id: usuario.id)
                     }else{
                         roles2 << Rol.findByAuthority('ROLE_COMPRADOR')
-                        println("==== otro rol")
-                        println("==== aut $roles2")
                         usuario = usuarioService.crea(usuario, roles2)
                         springSecurityService.reauthenticate(usuario.username)
-                        flash.message = message(code: "¡Bienvenido! Gracias por registrarte, ya puedes empezar a disfrutar de nuestros beneficios.")
-                        redirect(uri: '/')
-                        //redirect(controller:'auto', action:'show', id: usuario.auto.autoId)
-                        //redirect(uri:"/j_acegi_security_check?j_username=${usuario.username}&j_password=${usuario.password}")
+                        flash.message = message(code: 'auto.despuesRegistro', args: [usuario.nombre])
+                        redirect(controller:'auto', action:'verMas', id: params.autoId)
                     }
                 
             }

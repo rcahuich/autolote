@@ -124,7 +124,7 @@
                                   </g:hasErrors>
 
                                   <g:form url="[controller:'usuario', action:'save']" >
-                                          <g:hiddenField name="autoId" value="${usuarioInstance?.auto?.id}" />
+                                          <g:hiddenField name="autoId" value="${params.id}" />
                                           <fieldset class="form">
                                                   <g:render template="/usuario/form"/>
                                           </fieldset>
